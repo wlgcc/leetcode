@@ -1,0 +1,43 @@
+class Solution {
+public:
+bool y;
+    void dfs(int now,int sum,vector<string>&ans,unordered_map<string,map<string,int>>&m)
+{
+    if(y)
+    return;
+	if(now==sum+1)
+		{
+		    y=true;return ;
+	}
+	string n=ans[now-1];
+	for(auto s=m[n].begin();s!=m[n].end();s++)
+	{
+		if(s->second>0)
+		{
+			s->second--;
+			ans.push_back(s->first);
+			dfs(now+1,sum,ans,m);
+			if(y)
+			return ;
+			ans.pop_back();
+			s->second++;
+		}
+	}
+}
+vector<string> findItinerary(vector<pair<string, string>> tickets) {
+    y=false;
+        int len=tickets.size();
+		unordered_map<string,map<string,int>>m;
+		int sum=0;
+		for(int i=0;i<len;i++)
+		{
+			m[tickets[i].first][tickets[i].second]++;
+			sum++;
+		}
+		vector<string>ans;
+		ans.push_back("JFK");
+		dfs(1,sum,ans,m);
+		return ans;
+    }
+
+};

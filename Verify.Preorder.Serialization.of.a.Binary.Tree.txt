@@ -1,0 +1,52 @@
+class Solution {
+public:
+   
+    bool isValidSerialization(vector<string>ns);
+bool f(string preorder)
+{
+	int len=preorder.length();
+		vector<string>ns;
+		int old=0;
+		int ne=0;
+		while(ne<len)
+		{
+			if(preorder[ne]!=',')
+				ne++;
+			else
+			{
+			ns.push_back(preorder.substr(old,ne-old));
+			old=ne+1;
+			ne=old;
+			}
+		}
+		ns.push_back(preorder.substr(old,ne-old+1));
+		return isValidSerialization1(ns);
+}
+bool isValidSerialization1(vector<string>ns) {
+        
+		
+		int nlen=ns.size();
+		/*for(int i=0;i<nlen;i++)
+			cout<<ns[i]<<' ';
+		cout<<endl;*/
+		if(ns[0]=="#")
+		{
+			if(nlen==1)
+			return true;
+			else return false;
+		}
+		vector<string>nns;
+		for(int i=0;i<nlen;i++)
+		{
+			if(i<nlen-2&&ns[i]!="#"&&ns[i+1]=="#"&&ns[i+2]=="#")
+			{nns.push_back("#");i+=2;}
+			else nns.push_back(ns[i]);
+		}
+		if(nlen==nns.size())
+		return false;
+		return isValidSerialization1(nns);
+    }
+     bool isValidSerialization(string preorder) {
+        return f(preorder);
+    }
+};
